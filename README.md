@@ -41,7 +41,7 @@ Estás tareas no están en ningún orden concreto, organízalas como prefieras.
 
 - Crea una sidebar con dos páginas.
     - La primera se llamará "Subscripción". Este componente lo puedes encontar
-    en `componente.tsx`, ese código funciona pero tiene problemas. Refáctorizalo
+    en [este archivo](./code/src/pages/subscription.tsx), ese código funciona pero tiene problemas. Refáctorizalo
     como harías en una PR real.
     - La segunda será "Listado" y muestra el listado de las llamadas recibidas.
 
