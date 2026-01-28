@@ -1,54 +1,68 @@
 import { useEffect, useState } from "react";
-import { ProgressBar } from "@/components/base/progress-indicators/progress-indicators";
+import { ProgressBarCircle } from "@/components/base/progress-indicators/progress-circles";
 
 export default function SubscriptionPage() {
-  const [s, setS] = useState<any>();
-  const [l, setL] = useState(false);
+    const [s, setS] = useState<any>();
+    const [l, setL] = useState(false);
 
-  async function fetchData() {
-    setL(true);
-    const res = await fetch("/api/v1/billing/subscription", {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer sk-944645d244ddfa2890b77f2c1262e595d1aa6ad89a8d3775cb29c036dba9d55d",
-      },
-    });
-    const data = await res.json();
-    setS(data);
-    setL(false);
-  }
+    async function fetchData() {
+        setL(true);
+        const res = await fetch("/api/v1/billing/subscription", {
+            method: "GET",
+            headers: {
+                Authorization: "Bearer sk-944645d244ddfa2890b77f2c1262e595d1aa6ad89a8d3775cb29c036dba9d55d",
+            },
+        });
+        const data = await res.json();
+        setS(data);
+        setL(false);
+    }
 
-  useEffect(() => {
-    fetchData();
-  }); 
+    useEffect(() => {
+        fetchData();
+    }, []);
 
-  const daysLeft = Math.round((new Date(s?.period_end).getTime() - new Date().getTime()) / (10 * 3600 * 24)) / 100;
+    const daysLeft = Math.round((new Date(s?.period_end).getTime() - new Date().getTime()) / (10 * 3600 * 24)) / 100;
 
-  if (!s) return null;
+    if (!s) return null;
 
-  return (
-    <div style={{ padding: "32px" }} className="flex flex-1 flex-col gap-4">
-      <div className="flex w-full max-w-full flex-col gap-3 lg:max-w-3xl">
-        <h1>Subscripciones</h1>
-        <p>Gestiona tu plan actual y consumo de minutos.</p>
-      </div>
-      
-      <div className="rounded-xl border border-gray-300">
-        <div className="p-4" onClick={() => console.log(s.id)}>{s.name}</div>
-        <div className="rounded-xl p-4 ring ring-gray-300">
-          <div className="flex flex-col gap-2">
-            <div className="flex justify-between text-sm text-gray-600">
-              <p>
-                {s.minutes_count} / {s.included_minutes} min
-              </p>
-              <p>Quedan {daysLeft} días</p>
+    return (
+        <div style={{ padding: "32px" }} className="flex flex-1 flex-col gap-8">
+            <div className="flex w-full max-w-full flex-col gap-1 lg:max-w-3xl">
+                <h1 className="text-header-3 font-semibold text-brand-additional-500">Suscripción</h1>
+                <p className="text-body-sm text-neutral-900">Consulta tu plan actual, los minutos disponibles y la próxima fecha de facturación.</p>
             </div>
-            <ProgressBar value={s.minutes_count} max={s.included_minutes} />
-          </div>
+
+            <div className="rounded-xl border border-tertiary-500 bg-tertiary-200">
+                <div className="text-brand-aditional-500 p-4 text-body-md font-semibold" onClick={() => console.log(s.id)}>
+                    {s.name}
+                </div>
+                <div className="rounded-xl bg-white p-4 ring ring-tertiary-500">
+                    <div className="flex gap-6">
+                        <ProgressBarCircle value={s.minutes_count} size="xs" max={s.included_minutes} />
+                        <div className="grid flex-1 grid-cols-2 items-center gap-x-6">
+                            <div className="flex h-max items-end gap-1">
+                                <h4 className="text-header-4 font-semibold text-brand-additional-500">{s.price}€</h4>
+                                <p className="text-body-md text-neutral-colors-700">/{s.period}</p>
+                            </div>
+                            <div className="flex h-max flex-col">
+                                <p className="text-body-sm text-brand-additional-500">Días restantes para el próximo pago</p>
+                                <p className="text-body-sm text-neutral-colors-600">{daysLeft} días</p>
+                            </div>
+                            <div className="flex h-max flex-col">
+                                <p className="text-body-sm text-brand-additional-500">Minutos restantes</p>
+                                <p className="text-body-sm text-neutral-colors-600">{s.included_minutes - s.minutes_count}</p>
+                            </div>
+                            <div className="flex h-max flex-col">
+                                <p className="text-body-sm text-brand-additional-500">Minutos acumulados</p>
+                                <p className="text-body-sm text-neutral-colors-600">{s.rollover_minutes_count}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {l && <p>Cargando...</p>}
         </div>
-      </div>
-      
-      {l && <p>Cargando...</p>}
-    </div>
-  );
+    );
 }
