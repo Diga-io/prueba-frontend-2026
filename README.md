@@ -54,16 +54,16 @@ simplemente una descripción de lo que encontrarás en el diseño.
 Estás tareas no están en ningún orden concreto, organízalas como prefieras.
 
 - Crea una sidebar con dos páginas.
-    - La primera se llamará "Subscripción". Este componente lo puedes encontar
+    - La primera se llamará "Suscripción". Este componente lo puedes encontar
     en [este archivo](./code/src/pages/subscription.tsx), ese código funciona pero tiene problemas. Refáctorizalo
     como harías en una PR real.
-    - La segunda será "Listado" y muestra el listado de las llamadas recibidas.
+    - La segunda será "Registro de llamadas" y muestra el listado de las llamadas recibidas.
 
 - En esta sidebar, crea un "Selector de proyectos" que le permitirá al usuario
 cambiar la API key que se usa en las peticiones. Cuando el usuario cambia de
 proyecto, el contenido de la página debe recargarse de forma automática.
 
-- En la página de listado, debes añadir un scroll infinito para cargar las
+- En la página de Registro de llamadas, debes añadir un scroll infinito para cargar las
 distintas páginas de llamadas que pudieran haber.
 
 - Se deben manejar de forma distinta los estados de carga y los estados de error.
